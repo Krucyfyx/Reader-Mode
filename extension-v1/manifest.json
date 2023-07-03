@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "Reader_Mode_By_YUGAANSH_GAUTAM",
+  "version": "1.0.0",
+  "description": "A reader-extension that displays the textual content of any webpage in two-column paginated-format.",
+  "icons": {
+    "16": "logo/logo-16.png",
+    "32": "logo/logo-32.png",
+    "128": "logo/logo-128.png"
+  },
+  "permissions": ["activeTab", "tabs", "storage"],
+  "host_permissions": ["*://*/*"],
+  "action": {},
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["paginate.js", "textCollector.js", "content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}
