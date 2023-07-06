@@ -373,7 +373,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     
     console.log('Text-Collecter Script (from extension) started.');
     
-  
+    
     let collectedData = [];
   
     let walker = document.createTreeWalker(
@@ -386,8 +386,21 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
             const parentElement = node.parentElement;
             // Check if the parent element or any of its ancestors matches any of the excluded tags
             if (!parentElement || !isElementExcluded(parentElement) && !isAncestorExcluded(parentElement)) {
-              console.log('Node with text-content pushed');
-              collectedData.push(node.textContent.trim()); // Store the text content
+              console.log('Node with text-content & css pushed');
+              const elementData = {
+                text: node.textContent.trim(),
+                css: {}
+              };
+
+              const computedStyle = window.getComputedStyle(parentElement);
+              for (const property of relevantProperties) {
+                const propertyValue = computedStyle.getPropertyValue(property);
+                if (propertyValue !== 'none') {
+                  elementData.css[property] = propertyValue;
+                }
+              }
+
+              collectedData.push(elementData); // Store the text content and filtered CSS properties
               return NodeFilter.FILTER_ACCEPT;
             }
             return NodeFilter.FILTER_REJECT; // Skip the subtree
@@ -398,7 +411,8 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
       },
       false
     );
-  
+    
+    
     function isAncestorExcluded(element) {
       let ancestor = element.parentElement;
       while (ancestor) {
