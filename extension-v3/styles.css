@@ -12,7 +12,7 @@
   border: 1px solid #ccc;
   padding: 10px;
   box-sizing: border-box;
-  column-count: 2;
+  column-count: 1;
   column-gap: 10px;
   height: (100%); /* Subtract the height of the pagination buttons */
   overflow-y: auto; /* Enable vertical scrollbar when content exceeds height */
